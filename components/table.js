@@ -1,25 +1,33 @@
 import React, { useState ,useEffect}  from 'react';
+import MaterialTable from 'material-table';
 
 
 export default function Table() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState([]);
+  const [data, setData] = useState([]);
+  const columns = [
+        { title: "Date", field: "actionDate" , type: "date"},
+        { title: "Company", field: "offender.name" },
+  ]
 
-  // Note: the empty deps array [] means
-  // this useEffect will run once
-  // similar to componentDidMount()
   useEffect(() => {
     fetch("https://environment.data.gov.uk/public-register/enforcement-action/registration.json")
       .then(res => res.json())
       .then(
         (result) => {
           setIsLoaded(true);
-          setItems(result);
+              console.log(data);
+
+              for (let i = 0; i < result.items.length; i++) {
+                  var mydate = new Date(result.items[i].actionDate);
+                  result.items[i].actionDate = mydate;
+                  console.log(result.items[i].actionDate);
+              }
+              setData(result.items);
+
+
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           setIsLoaded(true);
           setError(error);
@@ -32,14 +40,20 @@ export default function Table() {
   } else if (!isLoaded) {
     return <div>Loading...</div>;
   } else {
-    return (
-      <ul>
-        {items.map(item => (
-          <li key={item.id}>
-            {item.name} {item.price}
-          </li>
-        ))}
-      </ul>
+      return (
+          <MaterialTable
+              title="Table"
+              data={data}
+              columns={columns}
+              options = {{
+                headerStyle: {
+                  backgroundColor: '#01579b',
+                  color: '#FFF'
+                }
+              }}
+
+
+          />
     );
   }
 }
