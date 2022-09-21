@@ -1,6 +1,13 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\components",
+    "\\pages",
+    "\\pages\\posts",
+    "\\public",
+    "\\public\\images",
+    "\\styles"
   ],
+  "SelectedNode": "\\pages\\posts\\first-post.js",
   "PreviewInSolutionExplorer": false
 }

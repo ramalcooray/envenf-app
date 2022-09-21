@@ -7,12 +7,14 @@ export default function Table() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [data, setData] = useState([]);
   const columns = [
-        { title: "Date", field: "actionDate" , type: "date"},
+      { title: "Date", field: "actionDate", type: "date", defaultSort:"desc" },
         { title: "Company", field: "offender.name" },
+        { title: "Offences", field: "offence.length", emptyValue: 1 },
+
   ]
 
   useEffect(() => {
-    fetch("https://environment.data.gov.uk/public-register/enforcement-action/registration.json")
+    fetch("https://environment.data.gov.uk/public-register/enforcement-action/registration.json?after=2015-12-10")
       .then(res => res.json())
       .then(
         (result) => {
@@ -45,13 +47,13 @@ export default function Table() {
               title="Table"
               data={data}
               columns={columns}
-              options = {{
-                headerStyle: {
-                  backgroundColor: '#01579b',
-                  color: '#FFF'
-                }
+              options={{
+                  headerStyle: {
+                      backgroundColor: '#01579b',
+                      color: '#FFF'
+                  }
               }}
-
+              onRowClick={(event, rowData) => console.log(rowData)}
 
           />
     );
